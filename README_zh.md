@@ -1,26 +1,24 @@
-[[简体中文]](https://github.com/jellyterra/bananapi-f3-archlinux/blob/master/README_zh.md)
-
 # Banana Pi F3 ArchLinux
-Arch Linux RISC-V image `rootfs.ext4` for Banana Pi F3 with SpacemiT X60/K1.
+适用于带 SpacemiT X60/K1 的 Banana Pi F3 的 Arch Linux RISC-V 映像 `rootfs.ext4`。
 
-### What have it done?
+### 这个映像做了什么？
 
-- Copy drivers
+- 复制驱动
     - /lib/dri
         - pvr_dri.so
         - spacemit_dri.so -> pvr_dri.so
     - /lib/firmware
     - /lib/modules
-- Network configuration
+- 网络配置
     - /etc/systemd/network/default.network
 
-[Felix Yan's wiki about archriscv](https://wiki.felixc.at/linux_risc-v)
+[Felix Yan 关于 archriscv 的 wiki](https://wiki.felixc.at/linux_risc-v)
 
-# Flash to BPi-F3
+# 烧录到 BPi-F3
 
-## Prepare
+## 准备
 
-### Dependencies
+### 依赖
 
 Install `fastboot`, `zstd`.
 
@@ -29,13 +27,13 @@ $ dnf install fastboot zstd # For Fedora, CentOS, RHEL etc.
 $ pacman -S   fastboot zstd # For ArchLinux
 ```
 
-### Flash tool
+### 烧录工具
 
-Download [flash tool from SpacemiT](https://download.banana-pi.dev/d/ca025d76afd448aabc63/files/?p=%2FTools%2Fimage_download_tools%2Ftitantools_for_linux-latest.zip).
+下载 [进迭时空](https://download.banana-pi.dev/d/ca025d76afd448aabc63/files/?p=%2FTools%2Fimage_download_tools%2Ftitantools_for_linux-latest.zip) 的烧录工具.
 
-Unzip and run the AppImage with option `--appimage-extract`.
+解压并带选项 `--appimage-extract` 运行 AppImage。
 
-Copy `squashfs-root/resources/app/flashserver` to one of the `$PATH`.
+复制 `squashfs-root/resources/app/flashserver` 到 `$PATH` 的任意一项下。
 
 ```sh
 $ unzip titantools_for_linux-latest.zip
@@ -46,9 +44,9 @@ $ cp -p ./squashfs-root/resources/app/flashserver ~/.local/bin/
 
 ### ROM
 
-Download [ROM from Banana Pi](https://drive.google.com/drive/folders/1LQoioz6N5YQpSOxY47OmetnPX4yggtT0): `bianbu-23.10-nas-k1-v1.0rc1-release-20240429192450.zip`
+下载 [ROM from Banana Pi](https://drive.google.com/drive/folders/1LQoioz6N5YQpSOxY47OmetnPX4yggtT0): `bianbu-23.10-nas-k1-v1.0rc1-release-20240429192450.zip`
 
-It looks like:
+应该看起来像这样:
 ```
 .
 ├── bootfs.ext4
@@ -65,30 +63,30 @@ It looks like:
 ├── partition_2M.json
 ├── partition_flash.json
 ├── partition_universal.json
-├── rootfs.ext4 <-- To be replaced.
+├── rootfs.ext4 <-- 将被替换
 └── u-boot.itb
 ```
 
-## Connect to the board
+## 连接到开发板
 
-Enter flash mode: press and hold `FDL`, press `RST` on the board.
+进入烧录模式：在板上按住 `FDL` 并按下 `RST`。
 
-Connect USB port on the board to your computer. It will show as a **DFU** device, and turn to `U-Boot USB download gadget` while flashing.
+将开发板连接到你的主机。开发板会以 **DFU** 设备出现并在烧录时显示为 `U-Boot USB download gadget`。
 ```
 $ lsusb
 Bus 001 Device 009: ID 361c:1001 U-Boot USB download gadget
 ```
 
-## Flash
+## 烧录
 
-Download the ArchLinux rootfs image can be found in [releases](https://github.com/jellyterra/bananapi-f3-archlinux/releases).
+下载 ArchLinux rootfs 映像。请找： [releases](https://github.com/jellyterra/bananapi-f3-archlinux/releases).
 
 ```sh
 $ zstd -d archriscv-2024-03-30.img.zst    # Decompress
 $ cp archriscv-2024-03-30.img rootfs.ext4 # Replace rootfs.ext4
 ```
 
-Run `flashserver` under the ROM directory.
+在 ROM 所在的目录下运行 `flashserver`。
 
 ```
 $ flashserver
@@ -156,36 +154,35 @@ download over in  2024-06-03 15:57:43
 ---》刷机成功!
 <-------------刷机结束---------------->
 ```
-## Enjoy!
+## 大功告成！
 
-Reset BPi-F3.
-ArchLinux will boot!
+复位 BPi-F3，ArchLinux 会随后启动！
 
-By [Felix Yan](https://archriscv.felixc.at/), the password of `root` is `archriscv`.
+据 [Felix Yan](https://archriscv.felixc.at/)，`root` 的密码为 `archriscv`。
 
-### Start services
+### 启动服务
 
-Network
+网络
 ```sh
 $ systemctl enable --now systemd-networkd
 ```
 
-Time Sync
+时间同步
 ```sh
 $ systemctl enable --now systemd-timesyncd
 ```
 
 > [!NOTE]
-> SSL connections only work with the correct time.
+> SSL 连接仅在正确的时间下有效。
 
-### Install packages
+### 安装软件包
 
 ```sh
 $ pacman -Syu
 $ pacman -S nano openssh openssl
 ```
 
-### Modify mirror list
+### 更改镜像列表
 ```sh
 $ nano /etc/pacman.d/mirrorlist
 ```
@@ -211,7 +208,7 @@ Server = https://mirror.iscas.ac.cn/archriscv/repo/$repo
 #Server = https://mirrors.felixc.at/archriscv/repo/$repo
 ```
 
-## Desktop Environment
+## 桌面环境
 
 ### KDE
 
@@ -234,4 +231,4 @@ $ dbus-run-session startxfce4
 ```
 
 ### GNOME
-Unavailable because `libmutter` is missing.
+最新的构建中缺失 `libmutter` 所以尚不可用。
