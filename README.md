@@ -25,8 +25,8 @@ Arch Linux RISC-V image `rootfs.ext4` for Banana Pi F3 with SpacemiT X60/K1.
 Install `fastboot`, `zstd`.
 
 ```sh
-$ dnf install fastboot zstd # For Fedora, CentOS, RHEL etc.
-$ pacman -S   fastboot zstd # For ArchLinux
+$ dnf install    fastboot zstd # For Fedora, CentOS, RHEL etc.
+$ pacman -S android-tools zstd # For ArchLinux
 ```
 
 ### Flash tool
