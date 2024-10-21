@@ -23,8 +23,8 @@
 Install `fastboot`, `zstd`.
 
 ```sh
-$ dnf install fastboot zstd # For Fedora, CentOS, RHEL etc.
-$ pacman -S   fastboot zstd # For ArchLinux
+$ dnf install    fastboot zstd # For Fedora, CentOS, RHEL etc.
+$ pacman -S android-tools zstd # For ArchLinux
 ```
 
 ### 烧录工具
