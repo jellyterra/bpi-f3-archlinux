@@ -1,3 +1,7 @@
+> [!NOTE]
+>
+> 该翻译可能已经过时.
+
 # Banana Pi F3 ArchLinux
 适用于带 SpacemiT X60/K1 的 Banana Pi F3 的 Arch Linux RISC-V 映像 `rootfs.ext4`。
 
